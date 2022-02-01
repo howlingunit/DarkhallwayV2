@@ -1,0 +1,23 @@
+{
+  "name": "darkhallway_v2",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "srv.js",
+  "scripts": {
+    "test": "node srv.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/howlingunit/messegingWebApp.git"
+  },
+  "author": "Tyler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/howlingunit/messegingWebApp/issues"
+  },
+  "homepage": "https://github.com/howlingunit/messegingWebApp#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
