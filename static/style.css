@@ -7,6 +7,11 @@
     padding: 0;
 }
 
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
 #wrapper{
     width: 100vw;
     height: 100vh;
@@ -14,8 +19,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
 }
 .invis{
     visibility: hidden;
+    margin: 0;
+    height: 0;
+    width: 0;
+}
+
+#nameBox{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#userList{
+    position: absolute;
+    margin: 1rem;
+    left: 0;
+    top: 0;
+}
+
+#msging{
+    /* margin-bottom: auto; */
+    /* margin-left: auto; */
+}
+
+#msgList{
+    max-height: 60vh;
+    overflow-y: scroll;
+}
+
+#msgBox{
+    display:flex;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
 }

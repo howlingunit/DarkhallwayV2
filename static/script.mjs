@@ -1,3 +1,6 @@
+import { writeToPage } from "./lib/writeToPage.mjs";
+
+
 function init(){
     const userSub = document.querySelector("#userSubButton");
     userSub.addEventListener("click", msgInit)
@@ -33,26 +36,11 @@ async function msgInit(){
     }
 }
 
-function writeMsgs(msgs){
-    const oldMsgList = document.querySelectorAll(".msg");
-    for(i of oldMsgList){
-        i.remove();
-    }
-    const msgList = document.querySelector("#msgList");
-    for(item of msgs){
-        const msg = document.createElement("li");
-        msg.classList.add("msg")
-        msg.textContent = `${item.user}:${item.msg}`;
-        msgList.appendChild(msg);
-    }
-}
-
 async function sendMsg(){
     const msg = document.querySelector("#msgInput").value;
     const user = document.querySelector("#username").value;
     const payload = {"user":user, "msg":msg};
-    console.log(payload);
-    const response = await fetch("sendMsg", {
+    fetch("sendMsg", {
         method: "POST",
         headers: {"content-type": "application/json"},
         body: JSON.stringify(payload)
@@ -61,6 +49,8 @@ async function sendMsg(){
 
 }
 async function running(){
+    let localMsgs =[];
+    const msgList = document.querySelector("#msgList");
     const username = document.querySelector("#username").value;
     while(true){
         const response = await fetch("check", {
@@ -68,10 +58,17 @@ async function running(){
             headers: {"content-type": "application/json"},
             body: JSON.stringify([username])
         });
-        const msgs = await response.json();
-        console.log(msgs);
-        writeMsgs(msgs);
-        sleep(1000);
+        const svrData = await response.json();
+        const msgs = svrData.msgs;
+        const connectedUsers = svrData.connectedUsers;
+        console.log(!!(localMsgs === msgs));
+        if(!(localMsgs.length === msgs.length)){
+            writeToPage(msgs, connectedUsers);
+            msgList.scrollTop = msgList.scrollHeight;
+
+        }
+        localMsgs = msgs;
+        await sleep(1000);
 
     }
 }
