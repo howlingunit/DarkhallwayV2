@@ -22,7 +22,7 @@ function writeUsers(users){
     for(const item of users){
         const user = document.createElement("p");
         user.classList.add("user");
-        user.textContent = item;
+        user.textContent = item.username;
         userList.append(user);
     }
 }

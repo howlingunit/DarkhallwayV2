@@ -1,6 +1,5 @@
 import { writeToPage } from "./lib/writeToPage.mjs";
 
-
 function init(){
     const userSub = document.querySelector("#userSubButton");
     userSub.addEventListener("click", msgInit)
@@ -17,8 +16,9 @@ async function msgInit(){
     const userName = document.querySelector("#username").value;
     const nameBox = document.querySelector("#nameBox");
     const msgBox = document.querySelector("#msgBox");
-    nameBox.classList.add("invis");
-    msgBox.classList.remove("invis");
+    const errorText = document.querySelector("#errorText");
+
+
 
     const payload = [userName];
 
@@ -30,9 +30,12 @@ async function msgInit(){
 
     if(response.ok){
         running();
+        nameBox.classList.add("invis");
+        msgBox.classList.remove("invis");    
 
     } else{
         console.log("svr error");
+        errorText.textContent = await response.json();
     }
 }
 
@@ -49,6 +52,7 @@ async function sendMsg(){
 
 }
 async function running(){
+    let localUsers = [];
     let localMsgs =[];
     const msgList = document.querySelector("#msgList");
     const username = document.querySelector("#username").value;
@@ -61,12 +65,12 @@ async function running(){
         const svrData = await response.json();
         const msgs = svrData.msgs;
         const connectedUsers = svrData.connectedUsers;
-        console.log(!!(localMsgs === msgs));
-        if(!(localMsgs.length === msgs.length)){
+        if(!(localMsgs.length === msgs.length) || !(localUsers.length == connectedUsers.length)){
             writeToPage(msgs, connectedUsers);
             msgList.scrollTop = msgList.scrollHeight;
 
         }
+        localUsers = connectedUsers;
         localMsgs = msgs;
         await sleep(1000);
 
