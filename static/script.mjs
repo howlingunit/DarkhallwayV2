@@ -2,7 +2,7 @@ import { writeToPage } from "./lib/writeToPage.mjs";
 
 function init(){
     const userSub = document.querySelector("#userSubButton");
-    userSub.addEventListener("click", msgInit)
+    userSub.addEventListener("click", msgInit);
 
 }
 
@@ -13,6 +13,13 @@ function sleep(ms) {
 async function msgInit(){
     const sendBtn = document.querySelector("#sendMsg");
     sendBtn.addEventListener("click", sendMsg);
+    document.addEventListener("keyup", function f(event){
+        if(event.code === "Enter"){
+            event.preventDefault();
+            sendMsg();
+        }
+    });
+
     const userName = document.querySelector("#username").value;
     const nameBox = document.querySelector("#nameBox");
     const msgBox = document.querySelector("#msgBox");
@@ -40,9 +47,11 @@ async function msgInit(){
 }
 
 async function sendMsg(){
-    const msg = document.querySelector("#msgInput").value;
+    const msg = document.querySelector("#msgInput");
     const user = document.querySelector("#username").value;
-    const payload = {"user":user, "msg":msg};
+    const payload = {"user":user, "msg":msg.value};
+    msg.value = "";
+
     fetch("sendMsg", {
         method: "POST",
         headers: {"content-type": "application/json"},
